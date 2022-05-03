@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.v(Debug, "Create");
 
         // User details
         user.name = "MAD";
@@ -32,8 +33,32 @@ public class MainActivity extends AppCompatActivity {
         TextView description = findViewById(R.id.description);
         description.setText(user.description);
 
-        // Update Follow Button Text
+        // Follow Button
+        Button followButton = findViewById(R.id.followbtn);
+
+        // Update Follow Button Text when starting
         UpdateFollowStatus(findViewById(R.id.followbtn));
+
+        followButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.v(TAG, "Follow/Unfollow Button clicked.");
+                user.followed = !user.followed;
+                UpdateFollowStatus(followButton);
+            }
+        });
+    }
+
+    // Change Follow Button text to Follow/Unfollow
+    public void UpdateFollowStatus(Button followBtn) {
+        if (user.followed == true) {
+            followBtn.setText("Unfollow");
+            Log.v(TAG, "Follow button set to 'Unfollow'.");
+        }
+        else {
+            followBtn.setText("Follow");
+            Log.v(TAG, "Follow button set to 'Follow'.");
+        }
     }
 
     // Debug
@@ -71,22 +96,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d(Debug, "Activity Destroyed");
-    }
-
-    public void followBtnClick(View view) {
-        Log.v(TAG, "Follow/Unfollow Button clicked.");
-        user.followed = !user.followed;
-        UpdateFollowStatus(findViewById(R.id.followbtn));
-    }
-
-    public void UpdateFollowStatus(Button followBtn) {
-        if (user.followed == true) {
-            followBtn.setText("Unfollow");
-            Log.v(TAG, "Follow button set to 'Unfollow'.");
-        }
-        else {
-            followBtn.setText("Follow");
-            Log.v(TAG, "Follow button set to 'Follow'.");
-        }
     }
 }
